@@ -6,7 +6,7 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
-  <title>Job Jeunes</title>
+  <title>Informatique</title>
 </head>
 <body>
    <?php 
@@ -17,7 +17,7 @@
       $info = json_decode($data, true);
            
       echo '<pre>';
-      print_r($info["Job Jeunes"]);
+      print_r($info["Informatique"]);
       echo  '</pre>';
    }
    else{
