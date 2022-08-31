@@ -5,11 +5,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
-  <link rel="stylesheet" href="../css/style.css">
-  <title>Document</title>
+  <link rel="stylesheet" href="../css/style.css">  
+  <script defer src="../../node_modules/tw-elements/dist/js/index.min.js"></script>
+  <title id="title">Commerce</title>
 </head>
 <body>
-  <header class="body-font bg-zinc-800 text-white flex py-3 md:flex-row items-center">
+  <header class="body-font bg-zinc-800 text-white flex pb-3 pt-2 md:flex-row items-center">
       <a class="flex justify-between title-font font-medium items-center mb-4 md:mb-0 " href="/go.php">
         <img src="https://go.fvaj.ch/img/favicon-228x228.png" title="Logo http://go.fvja.ch" class="p-0.5 float-left" alt="Logo GO" width="35" height="35">
         <span class="text-xl">GO</span>
@@ -70,36 +71,40 @@
       </a>
   </header>
 
-  <?php 
-   if(file_exists('information.json'))
-   {
-      $filename = 'information.json';
-      $data = file_get_contents($filename);
-      $info = json_decode($data, true);
-           
-      echo '<pre>';
-      print_r($info["information"]);
-      echo  '</pre>';
-   }
-   else{
-      echo "<h3 class='text-danger'>JSON file Not found</h3>";
-   }
-
-?>
   <main class="bg-[url('https://go.fvaj.ch/img/banner.jpg')] bg-cover border border-white">
     <div class="container pb-16">
       <div class="d-flex flex-column bd-highlight m-16 ">
           <div class="" style=" background-image: linear-gradient(rgba(0, 255, 0, 0.5), rgba(255, 255, 255, 0.5)); height:auto; min-height: 10em; padding:3px; margin:3px;">
-            <h1 class="display-4 text-center font-normal text-5xl pb-5">F.A.Q. <a href="../go.php" class="text-gray-400 border-b-4 border-gray-400 -mb-6">&#x1F3E0;&#x2303;</a></h1>
-              <a href="./fvaj/fvaj.php" class="w-full text-white bg-blue-500 rounded-t-lg flex p-2 title-font font-medium border border-black-100" aria-current="true"> Fondation FVAJ.CH</a>
-              <a href="./pre_app/pre-app.php" class="w-full bg-white text-gray-800 hover:bg-slate-100 hover:text-gray-600 active:hover:text-gray-400 flex p-2 title-font font-medium border border-black-100">Pré-Apprentissage</a>
-              <a href="./commerce/commerce.php" class="w-full bg-white text-gray-800 hover:bg-slate-100 hover:text-gray-600 active:hover:text-gray-400 flex p-2 title-font font-medium border border-black-100">Employé Commerce</a>
-              <a href="./logistique/logistique.php" class="w-full bg-white text-gray-800 hover:bg-slate-100 hover:text-gray-600 active:hover:text-gray-400 flex p-2 title-font font-medium border border-black-100">Logistique</a>
-              <a href="./media/media.php" class="w-full bg-white text-gray-800 hover:bg-slate-100 hover:text-gray-600 active:hover:text-gray-400 flex p-2 title-font font-medium border border-black-100">Médiamaticien</a>
-              <a href="./informatique/informatique.php" class="w-full bg-white text-gray-800 hover:bg-slate-100 hover:text-gray-600 active:hover:text-gray-400 flex p-2 title-font font-medium border border-black-100">Informatique</a>
-              <a href="./go_job/go_job.php" class="w-full bg-white text-gray-800 hover:bg-slate-100 hover:text-gray-600 active:hover:text-gray-400 flex p-2 title-font font-medium border border-black-100">Go-Job</a>
-              <a href="#" class="w-full bg-white text-gray-800 hover:bg-slate-100 hover:text-gray-600 active:hover:text-gray-400 rounded-b-lg flex p-2 title-font font-medium disabled border border-black-100" tabindex="-1" aria-disabled="true">Job Jeunes</a>
-        </div>
+            <h1 class="title display-4 text-center font-normal text-5xl p-4">Commerce <a href="../go.php" class="hover:text-gray-400 text-white border-b-4 hover:border-gray-400 border-white -mb-6">&#x1F3E0;&#x2303;</a></h1>
+                <button class="w-full bg-white text-gray-800 rounded-t-md hover:bg-slate-100 hover:text-gray-600 active:hover:text-gray-400 flex pb-3 pt-4 px-5 title-font font-medium border border-black-100" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="false" aria-controls="collapseExample">
+                  #1 avec Go-Job de faire
+                </button>
+              </p>
+              <div class="collapse" id="collapse1">
+                <div class="block p-5 shadow-lg bg-white">
+                  <strong>Est il possible avec Go-Job de faire un ....?</strong> Il est parfaite possible de faire cela et de manière très simple. Pour cela il suffit de réaliser en trois étapes. Vous pouvez trouver le document à l'adresse suivante: <code>.accordion-body</code>, Pour plus d'informations veuillez contacter ....
+                </div>
+              </div>
+              <button class="w-full bg-white text-gray-800 hover:bg-slate-100 hover:text-gray-600 active:hover:text-gray-400 flex pb-3 pt-4 px-5 title-font font-medium border border-black-100" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapseExample">
+                #2 aire un nouveau compte avec Go-job
+              </button>
+            </p>
+            <div class="collapse" id="collapse2">
+              <div class="block p-5 shadow-lg bg-white">
+               <strong>Comment faire un nouveau compte?.</strong> Il est parfaite possible de faire cela et de manière très simple. Pour cela il suffit de réaliser en trois étapes. Vous pouvez trouver le document à l'adresse suivante: <code>.accordion-body</code>, Pour plus d'informations veuillez contacter ....
+              </div>
+            </div>
+            <button class="w-full bg-white text-gray-800  rounded-b-md hover:bg-slate-100 hover:text-gray-600 active:hover:text-gray-400 flex pb-3 pt-4 px-5 title-font font-medium border border-black-100" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapseExample">
+              #3 faire un nouvel article
+            </button>
+          </p>
+          <div class="collapse" id="collapse3">
+            <div class="block p-5 shadow-lg bg-white">
+              <strong>Comment faire un nouvel article?.</strong> Il est parfaite possible de faire cela et de manière très simple. Pour cela il suffit de réaliser en trois étapes. Vous pouvez trouver le document à l'adresse suivante: <code>.accordion-body</code>, Pour plus d'informations veuillez contacter ....
+            </div>
+          </div>
+          </div>
+      </div>
     </div>
   </main>
   <hr class="bg-white m-4">
@@ -247,6 +252,6 @@
         </span>
       </div>
   </footer>
-
+  <script src="./TW-ELEMENTS-PATH/dist/js/index.min.js"></script>
 </body>
 </html>
