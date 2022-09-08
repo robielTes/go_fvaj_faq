@@ -191,7 +191,6 @@
 }else{
     header("Refresh:5");
     // printf("Bienvenue $_POST[type] $_SESSION[user_name], <a href=\"?action=logout\">Se déconnecter</a>",);   
-}
 ?>
 
 <main style="background-image: url('./img/banner.jpg');" class="bg-cover border border-white">
@@ -204,33 +203,20 @@
               <button type="submit" name="logout" class="inline-flex hover:text-white text-black mx-4 border bg-slate-100 bg-black-500  py-1 px-6 focus:outline-none hover:bg-green-600 rounded text-lg mb-6 float-right">Logout</button>
               </form>
             </h1>
-                <button class="w-full bg-white text-gray-800 rounded-t-md hover:bg-slate-100 hover:text-gray-600 active:hover:text-gray-400 flex pb-3 pt-4 px-5 title-font font-medium border border-black-100" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="false" aria-controls="collapseExample">
-                  #1 avec Go-Job de faire
-                </button>
-              </p>
-              <div class="collapse" id="collapse1">
+            
+            <?php foreach(get_information()["Information"] as $key => $value):?>
+              <?php $key++;?>
+              <button class="w-full bg-white text-gray-800  rounded-b-md hover:bg-slate-100 hover:text-gray-600 active:hover:text-gray-400 flex pb-3 pt-4 px-5 title-font font-medium border border-black-100" 
+              type="button" data-bs-toggle="collapse" data-bs-target="<?="#collapse{$key}"?>" aria-expanded="false" aria-controls="collapseExample">
+                <?="#{$key} {$value["title"]}"?>
+              </button>
+              <div class="collapse" id="<?="collapse{$key}"?>">
                 <div class="block p-5 shadow-lg bg-white">
-                  <strong>Est il possible avec Go-Job de faire un ....?</strong> Il est parfaite possible de faire cela et de manière très simple. Pour cela il suffit de réaliser en trois étapes. Vous pouvez trouver le document à l'adresse suivante: <code>.accordion-body</code>, Pour plus d'informations veuillez contacter ....
+                  <strong><?=$value["question"]?></strong><?=$value["answer"]?>
                 </div>
               </div>
-              <button class="w-full bg-white text-gray-800 hover:bg-slate-100 hover:text-gray-600 active:hover:text-gray-400 flex pb-3 pt-4 px-5 title-font font-medium border border-black-100" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapseExample">
-                #2 aire un nouveau compte avec Go-job
-              </button>
-            </p>
-            <div class="collapse" id="collapse2">
-              <div class="block p-5 shadow-lg bg-white">
-               <strong>Comment faire un nouveau compte?.</strong> Il est parfaite possible de faire cela et de manière très simple. Pour cela il suffit de réaliser en trois étapes. Vous pouvez trouver le document à l'adresse suivante: <code>.accordion-body</code>, Pour plus d'informations veuillez contacter ....
-              </div>
-            </div>
-            <button class="w-full bg-white text-gray-800  rounded-b-md hover:bg-slate-100 hover:text-gray-600 active:hover:text-gray-400 flex pb-3 pt-4 px-5 title-font font-medium border border-black-100" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapseExample">
-              #3 faire un nouvel article
-            </button>
-          </p>
-          <div class="collapse" id="collapse3">
-            <div class="block p-5 shadow-lg bg-white">
-              <strong>Comment faire un nouvel article?.</strong> Il est parfaite possible de faire cela et de manière très simple. Pour cela il suffit de réaliser en trois étapes. Vous pouvez trouver le document à l'adresse suivante: <code>.accordion-body</code>, Pour plus d'informations veuillez contacter ....
-            </div>
-          </div>
+            <?php endforeach ?>
+
           </div>
       </div>
     </div>
@@ -238,7 +224,10 @@
   <hr class="bg-white m-4">
 
    
-<footer class="body-font bg-zinc-800 text-white">
+<?php
+}
+?>
+  <footer class="body-font bg-zinc-800 text-white">
     <div class="container px-5 py-12 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
 
       <div class="flex-grow flex flex-wrap md:pl-20 -mb-10 md:mt-0 mt-10 md:text-left text-center">
