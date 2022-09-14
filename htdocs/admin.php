@@ -54,6 +54,23 @@ if(isset($_POST["save"])){
   echo "</pre>";
 }
 
+function display_faq(){
+  $faq_data ="";
+  
+  foreach(get_information()["Information"] as $key => $value){
+    $key++;
+    $faq_data.= '<button class="w-full bg-white text-gray-800 rounded-lg hover:bg-slate-100 hover:text-gray-600 active:hover:text-gray-400 flex pb-3 pt-4 px-5 title-font font-medium border border-black-100" type="button" data-bs-toggle="collapse" data-bs-target="#collapse'.$key.' aria-expanded="false" aria-controls="collapseExample">';
+    $faq_data.=    "#{$key} {$value["title"]}";      
+    $faq_data.= '</button>';
+    $faq_data.=  '<div class="collapse" id="collapse'.$key.'">';
+    $faq_data.=    '<div class="block p-5 shadow-lg bg-white rounded-lg">';
+    $faq_data.=       "<strong>{$value["question"]}</strong>{$value["answer"]}";
+    $faq_data.=    '</div>';
+    $faq_data.=  '</div>';
+  }
+  return $faq_data;
+}
+
 // check if user is logged in if not show login form
 if(!isset($_SESSION["user_name"])){ 
 ?>
@@ -140,19 +157,7 @@ else{
               <button type="submit" name="logout" class="inline-flex hover:text-white text-black mx-4 bg-blue-500 bg-black-500  py-1 px-6 focus:outline-none hover:bg-green-600 rounded text-lg mb-6 float-right">Logout</button>
               </form>
             </h1>
-            
-            <?php foreach(get_information()["Information"] as $key => $value):?>
-              <?php $key++;?>
-              <button class="w-full bg-white text-gray-800 rounded-lg hover:bg-slate-100 hover:text-gray-600 active:hover:text-gray-400 flex pb-3 pt-4 px-5 title-font font-medium border border-black-100" 
-              type="button" data-bs-toggle="collapse" data-bs-target="<?="#collapse{$key}"?>" aria-expanded="false" aria-controls="collapseExample">
-                <?="#{$key} {$value["title"]}"?>
-              </button>
-              <div class="collapse" id="<?="collapse{$key}"?>">
-                <div class="block p-5 shadow-lg bg-white rounded-lg">
-                  <strong><?=$value["question"]?></strong><?=$value["answer"]?>
-                </div>
-              </div>
-            <?php endforeach ?>
+              <?=display_faq()?>
 
             <form action="<?= $_SERVER["PHP_SELF"];?>" method="post" class="flex space-x-2 justify-center">
               <button type="submit" name="save" class="inline-block px-6 py-2.5 bg-blue-500 text-white leading-tight uppercase rounded-lg shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Save</button>
