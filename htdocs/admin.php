@@ -1,19 +1,22 @@
 <?php
 session_start();
+
 include_once("./templates/header.html");
 
-if(isset($_GET["action"]) && $_GET["action"] == "logout"){
-    unset($_SESSION["user_name"]);
-    session_destroy();
+//save post type to session
+if(isset($_POST["type"])){
+  $_SESSION["type"] = $_POST["type"];
 }
 
+// unset and destroy session if logout is clicked
 if(isset($_POST["logout"])){
   unset($_SESSION["user_name"]);
   session_destroy();
 }
 
+// get data from json file
 function get_information(){
-  $filename = "private/$_POST[type]/information.json";
+  $filename = "private/$_SESSION[type]/information.json";
   if(file_exists($filename)){
     $data = file_get_contents($filename);
     $info = json_decode($data, true);
@@ -24,6 +27,7 @@ function get_information(){
   }
 }
 
+// get user data from json file
 function get_user_data($user_name){
   $users = get_information()["users"];
   foreach($users as $user){
@@ -34,16 +38,24 @@ function get_user_data($user_name){
   return null;
 }
 
-  if(isset($_POST["submit"])){
-      if(get_user_data($_POST["login"]) !== null && 
-      password_verify($_POST["password"],get_user_data($_POST["login"])["password"])){
-          $_SESSION["user_name"] = $_POST["login"];
-      }else{
-          echo"<p class =\"error\">Utilisateur inconnu</p>";
-      }
-  }
+//check if user authentication is valid
+if(isset($_POST["submit"])){
+    if(get_user_data($_POST["login"]) !== null && 
+    password_verify($_POST["password"],get_user_data($_POST["login"])["password"])){
+        $_SESSION["user_name"] = $_POST["login"];
+    }else{
+        echo"<p class =\"error\">Utilisateur inconnu</p>";
+    }
+}
 
-  if(!isset($_SESSION["user_name"])){ 
+if(isset($_POST["save"])){
+  echo "<pre>";
+  print_r($_POST);
+  echo "</pre>";
+}
+
+// check if user is logged in if not show login form
+if(!isset($_SESSION["user_name"])){ 
 ?>
  <section class="h-screen bg-cover bg-center"  style="background-image: url('./img/banner.jpg');">
       <div class="container px-6 py-12 h-full">
@@ -57,7 +69,6 @@ function get_user_data($user_name){
           </div>
           <div class="md:w-8/12 lg:w-5/12 lg:ml-20">
             <form  action="<?= $_SERVER["PHP_SELF"];?>" method="POST">
-            <input type="hidden" name="type" value="<?=$_POST["type"]?>"/>
               <!-- Email input -->
               <div class="mb-6">
                 <input
@@ -113,7 +124,9 @@ function get_user_data($user_name){
       </div>
     </section>
 <?php
-}else{  
+}
+//if user is logged in show admin page
+else{
 ?>
 
 <main style="background-image: url('./img/banner.jpg');" class="bg-cover border border-white">
@@ -124,7 +137,7 @@ function get_user_data($user_name){
               <p class="text-3xl float-left"><?= isset($_SESSION["user_name"])? $_SESSION["user_name"]:"go.fvja.ch"?></p> 
               <a href="./index.html" class="hover:text-gray-400 text-white border-b-4 hover:border-gray-400 border-white -mb-6">&#x1F3E0;&#x2303;</a>
               <form action="<?= $_SERVER["PHP_SELF"];?>" method="post" class="p-3 inline">
-              <button type="submit" name="logout" class="inline-flex hover:text-white text-black mx-4 border bg-slate-100 bg-black-500  py-1 px-6 focus:outline-none hover:bg-green-600 rounded text-lg mb-6 float-right">Logout</button>
+              <button type="submit" name="logout" class="inline-flex hover:text-white text-black mx-4 bg-blue-500 bg-black-500  py-1 px-6 focus:outline-none hover:bg-green-600 rounded text-lg mb-6 float-right">Logout</button>
               </form>
             </h1>
             
@@ -141,10 +154,17 @@ function get_user_data($user_name){
               </div>
             <?php endforeach ?>
 
+            <form action="<?= $_SERVER["PHP_SELF"];?>" method="post" class="flex space-x-2 justify-center">
+              <button type="submit" name="save" class="inline-block px-6 py-2.5 bg-blue-500 text-white leading-tight uppercase rounded-lg shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Save</button>
+            </form>
+
           </div>
       </div>
     </div>
   </main>
+
+ 
+  
   <hr class="bg-white m-4">
    
 <?php
