@@ -4,9 +4,11 @@ session_start();
 include_once("./templates/header.html");
 
 //save post type to session
+echo $_POST['type'];
 if(isset($_POST["type"])){
   $_SESSION["type"] = $_POST["type"];
 }
+echo $_SESSION["type"];
 
 // unset and destroy session if logout is clicked
 if(isset($_POST["logout"])){
@@ -42,7 +44,8 @@ function get_user_data($user_name){
 if(isset($_POST["submit"])){
     if(get_user_data($_POST["login"]) !== null && 
     password_verify($_POST["password"],get_user_data($_POST["login"])["password"])){
-        $_SESSION["user_name"] = $_POST["login"];
+        $_SESSION["user_name"] = $_POST["login"].'/'.$_SESSION["type"];
+        
     }else{
         echo"<p class =\"error\">Utilisateur inconnu</p>";
     }
@@ -125,9 +128,54 @@ if(isset($_POST["delete"])){
 
 
 // check if user is logged in if not show login form
-if(!isset($_SESSION["user_name"])){ 
+if(isset($_SESSION["user_name"]) && explode('/',$_SESSION["user_name"])[1] == $_SESSION["type"]){
 ?>
- <section class="h-screen bg-cover bg-center"  style="background-image: url('./img/banner.jpg');">
+ <main style="background-image: url('./img/banner.jpg');" class="bg-cover border border-white">
+  <div class="container pb-16">
+    <div class="d-flex flex-column bd-highlight m-16 ">
+        <div class="" style=" background-image: linear-gradient(rgba(0, 255, 0, 0.5), rgba(255, 255, 255, 0.5)); height:auto; min-height: 10em; padding:3px; margin:3px;">
+          <h1 class="title display-4 text-center font-normal text-5xl p-4"><?=get_information()["title"]?>
+            <p class="text-3xl float-left"><?= isset($_SESSION["user_name"])? explode('/',$_SESSION["user_name"])[0]:"go.fvja.ch"?></p> 
+            <a href="./index.html" class="hover:text-gray-400 text-white border-b-4 hover:border-gray-400 border-white -mb-6">&#x1F3E0;&#x2303;</a>
+            <form action="<?= $_SERVER["PHP_SELF"];?>" method="post" class="p-3 inline">
+            <button type="submit" name="logout" class="inline-flex hover:text-white text-black mx-4 border bg-slate-100 bg-black-500  py-1 px-6 focus:outline-none hover:bg-green-600 rounded text-lg mb-6 float-right">Logout</button>
+            </form>
+          </h1>
+          
+          <?php foreach(get_information()["Information"] as $key => $value):?>
+            <?php $key++;?>
+              <div class="w-full bg-white text-gray-800 rounded-lg flex justify-between hover:bg-slate-100 hover:text-gray-600 active:hover:text-gray-400 pb-3 pt-4 px-5 title-font font-medium border border-black-100" 
+              type="button" data-bs-toggle="collapse" data-bs-target="<?="#collapse{$key}"?>" aria-expanded="false" aria-controls="collapseExample">
+                <div><?="#{$key} {$value["title"]}"?></div>
+                <form method="POST" action="<?= $_SERVER["PHP_SELF"];?>">
+                  <button type="submit" name="delete" value="<?=$key?>">
+                  <i class="fa-solid fa-trash"></i>
+                  </button>
+                </form>
+              </div>
+
+            <div class="collapse" id="<?="collapse{$key}"?>">
+              <div class="block p-5 shadow-lg bg-white rounded-lg">
+                <strong><?=$value["question"]?></strong><?=$value["answer"]?>
+              </div>
+            </div>
+          <?php endforeach ?>
+
+          <form action="<?=$_SERVER["PHP_SELF"]?>" method="post" class="flex space-x-2 justify-center">
+              <button type="submit" name="save" class="inline-block px-6 py-2.5 bg-blue-500 text-white leading-tight uppercase rounded-lg shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Save</button>
+          </form>
+
+        </div>
+    </div>
+  </div>
+</main>
+
+<?php
+}
+//if user is logged in show admin page
+else{  
+  ?>
+  <section class="h-screen bg-cover bg-center"  style="background-image: url('./img/banner.jpg');">
       <div class="container px-6 py-12 h-full">
         <div class="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
           <div class="md:w-8/12 lg:w-6/12 mb-12 md:mb-0">
@@ -193,52 +241,6 @@ if(!isset($_SESSION["user_name"])){
         </div>
       </div>
     </section>
-<?php
-}
-//if user is logged in show admin page
-else{  
-  ?>
-  
-  <main style="background-image: url('./img/banner.jpg');" class="bg-cover border border-white">
-      <div class="container pb-16">
-        <div class="d-flex flex-column bd-highlight m-16 ">
-            <div class="" style=" background-image: linear-gradient(rgba(0, 255, 0, 0.5), rgba(255, 255, 255, 0.5)); height:auto; min-height: 10em; padding:3px; margin:3px;">
-              <h1 class="title display-4 text-center font-normal text-5xl p-4"><?=get_information()["title"]?>
-                <p class="text-3xl float-left"><?= isset($_SESSION["user_name"])? $_SESSION["user_name"]:"go.fvja.ch"?></p> 
-                <a href="./index.html" class="hover:text-gray-400 text-white border-b-4 hover:border-gray-400 border-white -mb-6">&#x1F3E0;&#x2303;</a>
-                <form action="<?= $_SERVER["PHP_SELF"];?>" method="post" class="p-3 inline">
-                <button type="submit" name="logout" class="inline-flex hover:text-white text-black mx-4 border bg-slate-100 bg-black-500  py-1 px-6 focus:outline-none hover:bg-green-600 rounded text-lg mb-6 float-right">Logout</button>
-                </form>
-              </h1>
-              
-              <?php foreach(get_information()["Information"] as $key => $value):?>
-                <?php $key++;?>
-                  <div class="w-full bg-white text-gray-800 rounded-lg flex justify-between hover:bg-slate-100 hover:text-gray-600 active:hover:text-gray-400 pb-3 pt-4 px-5 title-font font-medium border border-black-100" 
-                  type="button" data-bs-toggle="collapse" data-bs-target="<?="#collapse{$key}"?>" aria-expanded="false" aria-controls="collapseExample">
-                    <div><?="#{$key} {$value["title"]}"?></div>
-                    <form method="POST" action="<?= $_SERVER["PHP_SELF"];?>">
-                      <button type="submit" name="delete" value="<?=$key?>">
-                      <i class="fa-solid fa-trash"></i>
-                      </button>
-                    </form>
-                  </div>
-
-                <div class="collapse" id="<?="collapse{$key}"?>">
-                  <div class="block p-5 shadow-lg bg-white rounded-lg">
-                    <strong><?=$value["question"]?></strong><?=$value["answer"]?>
-                  </div>
-                </div>
-              <?php endforeach ?>
-
-              <form action="<?=$_SERVER["PHP_SELF"]?>" method="post" class="flex space-x-2 justify-center">
-                  <button type="submit" name="save" class="inline-block px-6 py-2.5 bg-blue-500 text-white leading-tight uppercase rounded-lg shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Save</button>
-              </form>
-  
-            </div>
-        </div>
-      </div>
-    </main>
-     
   <?php
   }
   
