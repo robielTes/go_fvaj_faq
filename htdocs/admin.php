@@ -57,6 +57,7 @@ if(isset($_POST["save"])){
 function generate_html_page(){
   $file = "$_SESSION[type].html";
   // Open the file to get existing content
+  $current = "";
   $current .= file_get_contents("./templates/header.html");
   $current .= display_main();
   $current .= file_get_contents("./templates/footer.html");
@@ -99,6 +100,22 @@ function display_main(){
   $main_data .= '</main>';
 
   return $main_data;
+}
+
+//delete data from json file
+function delete_information($id){
+  $filename = "private/$_SESSION[type]/information.json";
+  $data = file_get_contents($filename);
+  $info = json_decode($data, true);
+  unset($info["Information"][$id]);
+  $info["Information"] = array_values($info["Information"]);
+  $data = json_encode($info, JSON_PRETTY_PRINT);
+  file_put_contents($filename, $data);
+}
+
+if(isset($_POST["delete"])){
+  delete_information(--$_POST["delete"]);
+  unset($_POST["delete"]);
 }
 
 
@@ -191,10 +208,16 @@ else{
               
               <?php foreach(get_information()["Information"] as $key => $value):?>
                 <?php $key++;?>
-                <button class="w-full bg-white text-gray-800 rounded-lg hover:bg-slate-100 hover:text-gray-600 active:hover:text-gray-400 flex pb-3 pt-4 px-5 title-font font-medium border border-black-100" 
-                type="button" data-bs-toggle="collapse" data-bs-target="<?="#collapse{$key}"?>" aria-expanded="false" aria-controls="collapseExample">
-                  <?="#{$key} {$value["title"]}"?>
-                </button>
+                  <div class="w-full bg-white text-gray-800 rounded-lg flex justify-between hover:bg-slate-100 hover:text-gray-600 active:hover:text-gray-400 pb-3 pt-4 px-5 title-font font-medium border border-black-100" 
+                  type="button" data-bs-toggle="collapse" data-bs-target="<?="#collapse{$key}"?>" aria-expanded="false" aria-controls="collapseExample">
+                    <div><?="#{$key} {$value["title"]}"?></div>
+                    <form method="POST" action="<?= $_SERVER["PHP_SELF"];?>">
+                      <button type="submit" name="delete" value="<?=$key?>">
+                      <i class="fa-solid fa-trash"></i>
+                      </button>
+                    </form>
+                  </div>
+
                 <div class="collapse" id="<?="collapse{$key}"?>">
                   <div class="block p-5 shadow-lg bg-white rounded-lg">
                     <strong><?=$value["question"]?></strong><?=$value["answer"]?>
