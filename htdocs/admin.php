@@ -4,11 +4,9 @@ session_start();
 include_once("./templates/header.html");
 
 //save post type to session
-echo $_POST['type'];
 if(isset($_POST["type"])){
   $_SESSION["type"] = $_POST["type"];
 }
-echo $_SESSION["type"];
 
 // unset and destroy session if logout is clicked
 if(isset($_POST["logout"])){
@@ -96,7 +94,7 @@ function display_main(){
   $main_data .=             get_information()["title"];
   $main_data .=            '<a href="./index.html" class="hover:text-gray-400 text-white border-b-4 hover:border-gray-400 border-white -mb-6">&#x1F3E0;&#x2303;</a>';
   $main_data .=           '<form method="post" action="./admin.php"  class="hover:text-gray-400 text-white mb-6 float-right">';
-  $main_data .=             '<input type="hidden" name="type" value="informatique"/>';
+  $main_data .=             '<input type="hidden" name="type" value="'.$_SESSION["type"].'"/>';
   $main_data .=             '<button type="submit"><i class="fa-solid fa-user"></i></button>';
   $main_data .=           '</form>';
   $main_data .=         '</h1>';
