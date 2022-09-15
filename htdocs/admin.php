@@ -92,6 +92,10 @@ function display_main(){
   $main_data .=         '<h1 class="title display-4 text-center font-normal text-5xl p-4">';
   $main_data .=             get_information()["title"];
   $main_data .=            '<a href="./index.html" class="hover:text-gray-400 text-white border-b-4 hover:border-gray-400 border-white -mb-6">&#x1F3E0;&#x2303;</a>';
+  $main_data .=           '<form method="post" action="./admin.php"  class="hover:text-gray-400 text-white mb-6 float-right">';
+  $main_data .=             '<input type="hidden" name="type" value="informatique"/>';
+  $main_data .=             '<button type="submit"><i class="fa-solid fa-user"></i></button>';
+  $main_data .=           '</form>';
   $main_data .=         '</h1>';
   $main_data .=         display_faq();
   $main_data .=       '</div>';
@@ -102,7 +106,7 @@ function display_main(){
   return $main_data;
 }
 
-//delete data from json file
+//delete information from json file
 function delete_information($id){
   $filename = "private/$_SESSION[type]/information.json";
   $data = file_get_contents($filename);
@@ -115,6 +119,7 @@ function delete_information($id){
 
 if(isset($_POST["delete"])){
   delete_information(--$_POST["delete"]);
+  generate_html_page();
   unset($_POST["delete"]);
 }
 
