@@ -107,7 +107,30 @@ function display_main(){
   return $main_data;
 }
 
+//add information to json file
+
+if(isset($_POST["add"])){
+  add_information($_POST["title"], $_POST["question"], $_POST["answer"]);
+  generate_html_page();
+  unset($_POST["add"],$_POST["title"],$_POST["question"],$_POST["answer"]);
+}
+function add_information($title, $question, $answer){
+  $filename = "private/$_SESSION[type]/information.json";
+  $data = file_get_contents($filename);
+  $info = json_decode($data, true);
+  $info["Information"][] = array("title" => $title, "question" => $question, "answer" => $answer,"star"=>0,"isEditing"=>false);
+  $data = json_encode($info, JSON_PRETTY_PRINT);
+  file_put_contents($filename, $data);
+}
+
+
 //delete information from json file
+
+if(isset($_POST["delete"])){
+  delete_information(--$_POST["delete"]);
+  generate_html_page();
+  unset($_POST["delete"]);
+}
 function delete_information($id){
   $filename = "private/$_SESSION[type]/information.json";
   $data = file_get_contents($filename);
@@ -116,12 +139,6 @@ function delete_information($id){
   $info["Information"] = array_values($info["Information"]);
   $data = json_encode($info, JSON_PRETTY_PRINT);
   file_put_contents($filename, $data);
-}
-
-if(isset($_POST["delete"])){
-  delete_information(--$_POST["delete"]);
-  generate_html_page();
-  unset($_POST["delete"]);
 }
 
 
@@ -159,10 +176,28 @@ if(isset($_SESSION["user_name"]) && explode('/',$_SESSION["user_name"])[1] == $_
             </div>
           <?php endforeach ?>
 
+          <button class="w-full justify-center bg-white text-gray-800 rounded-t-md hover:bg-slate-100 hover:text-gray-600 active:hover:text-gray-400 flex pb-3 pt-4 px-5 title-font font-medium border border-black-100" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNew" aria-expanded="false" aria-controls="collapseExample">
+            <i class="fa-sharp fa-solid fa-plus"></i>
+          </button>
+          <form action="<?=$_SERVER["PHP_SELF"]?>" id="collapseNew" method="post" class="flex collapse bg-gray-400 md:ml-auto w-full md:py-8 mt-8 md:mt-0">
+            <div class="flex w-full md:justify-start justify-center items-stretch">
+              <div class="relative m-4 md:w-full lg:w-full xl:w-1/2 w-2/4">
+                <div class="relative mb-4">
+                  <input type="text" placeholder="Title" id="title" name="title" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                </div>
+                <div class="relative mb-4">
+                  <input type="text" id="question" placeholder="Question" name="question" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                </div>
+                <div class="relative">
+                  <textarea id="answer" name="answer" placeholder="Answer" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"></textarea>
+                </div>
+              </div>
+              <button type="submit" name="add" class="m-4 px-6 inline-block py-2.5 bg-blue-500 text-white leading-tight uppercase rounded-lg shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Add</button>
+            </div>
+          </form>
           <form action="<?=$_SERVER["PHP_SELF"]?>" method="post" class="flex space-x-2 justify-center">
               <button type="submit" name="save" class="inline-block px-6 py-2.5 bg-blue-500 text-white leading-tight uppercase rounded-lg shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Save</button>
           </form>
-
         </div>
     </div>
   </div>
