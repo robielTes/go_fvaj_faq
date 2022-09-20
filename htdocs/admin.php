@@ -184,16 +184,25 @@ if(isset($_SESSION["user_name"]) && explode('/',$_SESSION["user_name"])[1] == $_
                 type="button" data-bs-toggle="collapse" data-bs-target="<?="#collapse{$key}"?>" aria-expanded="false" aria-controls="collapseExample">
                 <div><?="#{$key} {$value["title"]}"?></div>
                 <div class="flex">
-                  <form method="POST" action="<?= $_SERVER["PHP_SELF"];?>">
-                    <button name="edit" class="mr-4" value="<?=$key?>" data-bs-toggle="collapse" data-bs-target="<?="#collapseEdit{$key}"?>" aria-expanded="false" aria-controls="collapseExample">
-                      <i class="fa-solid fa-edit"></i>
-                    </button>
-                  </form>
-                  <form method="POST" action="<?= $_SERVER["PHP_SELF"];?>">
-                    <button type="submit" name="delete" value="<?=$key?>">
-                    <i class="fa-solid fa-trash"></i>
-                    </button>
-                  </form>
+                
+                  
+                  <?php if(explode('/',$_SESSION["user_name"])[0] != "guest"):?>
+                    <form method="POST" action="<?= $_SERVER["PHP_SELF"];?>">
+                      <button name="edit" class="mr-4" value="<?=$key?>" data-bs-toggle="collapse" data-bs-target="<?="#collapseEdit{$key}"?>" aria-expanded="false" aria-controls="collapseExample">
+                        <i class="fa-solid fa-edit"></i>
+                      </button>
+                    </form>
+                  <?php endif;?>
+
+
+                  <?php if(explode('/',$_SESSION["user_name"])[0] == "admin"):?>
+                    <form method="POST" action="<?= $_SERVER["PHP_SELF"];?>">
+                      <button type="submit" name="delete" value="<?=$key?>">
+                      <i class="fa-solid fa-trash"></i>
+                      </button>
+                    </form>
+                  <?php endif;?>
+
                 </div>
               </div>
               <div class="collapse" id="<?="collapseEdit{$key}"?>">
@@ -238,25 +247,28 @@ if(isset($_SESSION["user_name"]) && explode('/',$_SESSION["user_name"])[1] == $_
               
           <?php endforeach ?>
 
-          <button class="w-full justify-center bg-white text-gray-800 rounded-t-md hover:bg-slate-100 hover:text-gray-600 active:hover:text-gray-400 flex pb-3 pt-4 px-5 title-font font-medium border border-black-100" data-bs-toggle="collapse" data-bs-target="#collapseNew" aria-expanded="false" aria-controls="collapseExample">
-            <i class="fa-sharp fa-solid fa-plus"></i>
-          </button>
-          <form action="<?=$_SERVER["PHP_SELF"]?>" id="collapseNew" method="post" class="flex collapse bg-gray-400 md:ml-auto w-full md:py-8 mt-8 md:mt-0">
-            <div class="flex w-full md:justify-start justify-center items-stretch">
-              <div class="relative m-4 md:w-full lg:w-full xl:w-1/2 w-2/4">
-                <div class="relative mb-4">
-                  <input type="text" placeholder="Title" id="title" name="title" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+          <?php if(explode('/',$_SESSION["user_name"])[0] != "guest"):?>
+            <button class="w-full justify-center bg-white text-gray-800 rounded-t-md hover:bg-slate-100 hover:text-gray-600 active:hover:text-gray-400 flex pb-3 pt-4 px-5 title-font font-medium border border-black-100" data-bs-toggle="collapse" data-bs-target="#collapseNew" aria-expanded="false" aria-controls="collapseExample">
+              <i class="fa-sharp fa-solid fa-plus"></i>
+            </button>
+            <form action="<?=$_SERVER["PHP_SELF"]?>" id="collapseNew" method="post" class="flex collapse bg-gray-400 md:ml-auto w-full md:py-8 mt-8 md:mt-0">
+              <div class="flex w-full md:justify-start justify-center items-stretch">
+                <div class="relative m-4 md:w-full lg:w-full xl:w-1/2 w-2/4">
+                  <div class="relative mb-4">
+                    <input type="text" placeholder="Title" id="title" name="title" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                  </div>
+                  <div class="relative mb-4">
+                    <input type="text" id="question" placeholder="Question" name="question" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                  </div>
+                  <div class="relative">
+                    <textarea id="answer" name="answer" placeholder="Answer" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"></textarea>
+                  </div>
                 </div>
-                <div class="relative mb-4">
-                  <input type="text" id="question" placeholder="Question" name="question" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                </div>
-                <div class="relative">
-                  <textarea id="answer" name="answer" placeholder="Answer" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"></textarea>
-                </div>
+                <button type="submit" name="add" class="m-4 px-6 inline-block py-2.5 bg-blue-500 text-white leading-tight uppercase rounded-lg shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Add</button>
               </div>
-              <button type="submit" name="add" class="m-4 px-6 inline-block py-2.5 bg-blue-500 text-white leading-tight uppercase rounded-lg shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Add</button>
-            </div>
-          </form>
+            </form>
+          <?php endif;?>
+          
         </div>
     </div>
   </div>
