@@ -1,6 +1,14 @@
 <?php
 session_start();
 
+// unset and destroy session if logout is clicked
+if(isset($_POST["logout"])){
+  unset($_SESSION["user_name"]);
+  session_destroy();  
+  header("Location: ./index.html");
+}
+
+
 include_once("./templates/header.html");
 
 //save post type to session
@@ -8,11 +16,6 @@ if(isset($_POST["type"])){
   $_SESSION["type"] = $_POST["type"];
 }
 
-// unset and destroy session if logout is clicked
-if(isset($_POST["logout"])){
-  unset($_SESSION["user_name"]);
-  session_destroy();
-}
 
 // get data from json file
 function get_information(){
