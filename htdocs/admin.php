@@ -123,6 +123,24 @@ function add_information($title, $question, $answer){
   file_put_contents($filename, $data);
 }
 
+//update information in json file
+if(isset($_POST["update"])){
+  echo "<pre>";
+  print_r($_POST);
+  echo "</pre>";
+  update_information($_POST["title"], $_POST["question"], $_POST["answer"], --$_POST["update"]);
+  generate_html_page();
+  unset($_POST["update"],$_POST["title"],$_POST["question"],$_POST["answer"]);
+}
+
+function update_information($title, $question, $answer, $id){
+  $filename = "private/$_SESSION[type]/information.json";
+  $data = file_get_contents($filename);
+  $info = json_decode($data, true);
+  $info["Information"][$id] = array("title" => $title, "question" => $question, "answer" => $answer,"star"=>0,"isEditing"=>false);
+  $data = json_encode($info, JSON_PRETTY_PRINT);
+  file_put_contents($filename, $data);
+}
 
 
 //delete information from json file
@@ -190,31 +208,32 @@ if(isset($_SESSION["user_name"]) && explode('/',$_SESSION["user_name"])[1] == $_
               </div>
             </div>
             <?php else:?>
-              <div class="w-full bg-white text-gray-800 rounded-lg flex justify-between hover:bg-slate-100 hover:text-gray-600 active:hover:text-gray-400 pb-3 pt-4 px-5 title-font font-medium border border-black-100" 
-                type="button" data-bs-toggle="collapse" data-bs-target="<?="#collapse{$key}"?>" aria-expanded="false" aria-controls="collapseExample">
-                <?="#{$key} {$value["title"]}"?></div>
-              <div class="flex w-full md:justify-start justify-center items-center">
-              <div class="relative m-4 md:w-full lg:w-full xl:w-1/2 w-2/4">
-                
-                <div class="relative mb-4">
-                  <label for="title" class="leading-7 text-sm text-gray-600">Title</label>
-                  <textarea id="title" name="title" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 transition-colors duration-200 ease-in-out"
-                  ><?=$value["title"]?></textarea>
+              <form action="<?=$_SERVER["PHP_SELF"]?>" id="collapseNew" method="post">
+                <div class="w-full bg-white text-gray-800 rounded-lg flex justify-between hover:bg-slate-100 hover:text-gray-600 active:hover:text-gray-400 pb-3 pt-4 px-5 title-font font-medium border border-black-100" 
+                  type="button" data-bs-toggle="collapse" data-bs-target="<?="#collapse{$key}"?>" aria-expanded="false" aria-controls="collapseExample">
+                  <?="#{$key} {$value["title"]}"?></div>
+                <div class="flex w-full md:justify-start justify-center items-center">
+                  <div class="relative m-4 md:w-full lg:w-full xl:w-1/2 w-2/4">
+                    
+                    <div class="relative mb-4">
+                      <label for="title" class="leading-7 text-sm text-gray-600">Title</label>
+                      <textarea id="title" name="title" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 transition-colors duration-200 ease-in-out"
+                      ><?=$value["title"]?></textarea>
+                    </div>
+                    <div class="relative mb-4">
+                      <label for="question" class="leading-7 text-sm text-gray-600">Question</label>
+                      <textarea id="question" name="question" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 transition-colors duration-200 ease-in-out"
+                      ><?=$value["question"]?></textarea>
+                    </div>
+                    <div class="relative">
+                      <label for="answer" class="leading-7 text-sm text-gray-600">Answer</label>
+                      <textarea id="answer" name="answer"  class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 resize-none transition-colors duration-200 ease-in-out"
+                      ><?=$value["answer"]?></textarea>
+                    </div>
+                  </div>
+                  <button type="submit" name="update" value="<?=$key?>" class="m-4 px-6 inline-block py-2.5 bg-blue-500 text-white leading-tight uppercase rounded-lg shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Update</button>
                 </div>
-                <div class="relative mb-4">
-                  <label for="question" class="leading-7 text-sm text-gray-600">Question</label>
-                  <textarea id="question" name="question" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 transition-colors duration-200 ease-in-out"
-                  ><?=$value["question"]?></textarea>
-                </div>
-                <div class="relative">
-                  <label for="answer" class="leading-7 text-sm text-gray-600">Answer</label>
-                  <textarea id="answer" name="answer"  class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 resize-none transition-colors duration-200 ease-in-out"
-                  ><?=$value["answer"]?></textarea>
-                </div>
-              </div>
-              <button type="submit" name="update" class="m-4 px-6 inline-block py-2.5 bg-blue-500 text-white leading-tight uppercase rounded-lg shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Update</button>
-            </div>
-          </form>
+                </form>
             <?php endif;?>
               
           <?php endforeach ?>
