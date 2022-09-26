@@ -168,49 +168,43 @@ function delete_information($id){
 <div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
   id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog relative w-auto pointer-events-none">
-    <div
-      class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
-      <div
-        class="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
-        <h5 class="text-xl font-medium leading-normal text-gray-800" id="exampleModalLabel">Change Password</h5>
-        <button type="button"
-          class="btn-close box-content w-4 h-4 p-1 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline"
-          data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal-content border-none shadow-lg relative flex flex-col p-2  pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current lg:w-1/3 md:w-1/2 md:ml-auto w-full md:py-8 mt-8 md:mt-0">
+      <div class="modal-header flex flex-shrink-0 items-center justify-between border-b border-gray-200 rounded-t-md">
+        <h5 class="text-xl p-4 font-medium leading-normal text-gray-800" id="exampleModalLabel">Change Password</h5>
       </div>
-      <form  action="<?= $_SERVER["PHP_SELF"];?>" method="POST">
-      <!-- Password input -->
+      <form  action="<?= $_SERVER["PHP_SELF"];?>" method="POST"  >
+        <!-- Admin Password input -->
               <div class="mb-6">
                 <input
                   type="password"
-                  class="form-control block px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                  class="w-full p-4 bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
                   placeholder="Password Admin"
                   name="password"
                 />
               </div>
-              <!-- Email input -->
+              <!-- username input -->
               <div class="mb-6">
-                <input
-                  type="text"
-                  class="form-control block px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                  placeholder="Username"
-                  name="login"
-                />
+                <select class="w-full p-4 block px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name="username" id="username">
+                <option value="admin" selected>Admin</option>
+                <option value="webmaster">Webmaster</option>
+                <option value="guest">Guest</option>
+                </select>
               </div>
 
               <!-- Password input -->
               <div class="mb-6">
                 <input
                   type="password"
-                  class="form-control block px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                  class="w-full p-4 bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
                   placeholder="Password"
                   name="password"
                 />
               </div>
-              <!-- Password input -->
+              <!-- Password conformation input -->
               <div class="mb-6">
                 <input
                   type="password"
-                  class="form-control block px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                  class="w-full p-4 bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
                   placeholder="Password Confirmation"
                   name="password"
                 />
@@ -219,7 +213,7 @@ function delete_information($id){
               <button
                 type="submit"data-mdb-ripple="true"
                 data-mdb-ripple-color="light"
-                type="submit" name="changePassword" class="px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ml-1">change Password</button>
+                type="submit" name="changePassword" class="w-full py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-2000 ease-in-out">change Password</button>
             </form>
     </div>
   </div>

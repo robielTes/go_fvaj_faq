@@ -4302,16 +4302,6 @@ textarea.form-control.is-invalid {
   border-radius: 0.25rem;
 }
 
-.rounded-t-md {
-  border-top-left-radius: 0.375rem;
-  border-top-right-radius: 0.375rem;
-}
-
-.rounded-b-md {
-  border-bottom-right-radius: 0.375rem;
-  border-bottom-left-radius: 0.375rem;
-}
-
 .rounded-t-lg {
   border-top-left-radius: 0.5rem;
   border-top-right-radius: 0.5rem;
@@ -4389,10 +4379,6 @@ textarea.form-control.is-invalid {
 .bg-blue-600 {
   --tw-bg-opacity: 1;
   background-color: rgb(37 99 235 / var(--tw-bg-opacity));
-}
-
-.bg-\[url\(\'https\:\/\/go\.fvaj\.ch\/img\/banner\.jpg\'\)\] {
-  background-image: url('https://go.fvaj.ch/img/banner.jpg');
 }
 
 .bg-cover {
