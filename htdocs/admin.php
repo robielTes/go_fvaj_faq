@@ -163,6 +163,69 @@ function delete_information($id){
   file_put_contents($filename, $data);
 }
 
+?>
+<!-- Modal -->
+<div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
+  id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog relative w-auto pointer-events-none">
+    <div
+      class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
+      <div
+        class="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
+        <h5 class="text-xl font-medium leading-normal text-gray-800" id="exampleModalLabel">Change Password</h5>
+        <button type="button"
+          class="btn-close box-content w-4 h-4 p-1 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline"
+          data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form  action="<?= $_SERVER["PHP_SELF"];?>" method="POST">
+      <!-- Password input -->
+              <div class="mb-6">
+                <input
+                  type="password"
+                  class="form-control block px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                  placeholder="Password Admin"
+                  name="password"
+                />
+              </div>
+              <!-- Email input -->
+              <div class="mb-6">
+                <input
+                  type="text"
+                  class="form-control block px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                  placeholder="Username"
+                  name="login"
+                />
+              </div>
+
+              <!-- Password input -->
+              <div class="mb-6">
+                <input
+                  type="password"
+                  class="form-control block px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                  placeholder="Password"
+                  name="password"
+                />
+              </div>
+              <!-- Password input -->
+              <div class="mb-6">
+                <input
+                  type="password"
+                  class="form-control block px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                  placeholder="Password Confirmation"
+                  name="password"
+                />
+              </div>
+              <!-- Submit button -->
+              <button
+                type="submit"data-mdb-ripple="true"
+                data-mdb-ripple-color="light"
+                type="submit" name="changePassword" class="px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ml-1">change Password</button>
+            </form>
+    </div>
+  </div>
+</div>
+<?php
+
 
 
 // check if user is logged in if not show login form
@@ -173,11 +236,27 @@ if(isset($_SESSION["user_name"]) && explode('/',$_SESSION["user_name"])[1] == $_
     <div class="d-flex flex-column bd-highlight m-16 ">
         <div class="" style=" background-image: linear-gradient(rgba(0, 255, 0, 0.5), rgba(255, 255, 255, 0.5)); height:auto; min-height: 10em; padding:3px; margin:3px;">
           <h1 class="title display-4 text-center font-normal text-5xl p-4"><?=get_information()["title"]?>
-            <p class="text-3xl float-left"><?= isset($_SESSION["user_name"])? explode('/',$_SESSION["user_name"])[0]:"go.fvja.ch"?></p> 
             <a href="./index.html" class="hover:text-gray-400 text-white border-b-4 hover:border-gray-400 border-white -mb-6">&#x1F3E0;&#x2303;</a>
-            <form action="<?= $_SERVER["PHP_SELF"];?>" method="post" class="p-3 inline">
-            <button type="submit" name="logout" class="inline-flex hover:text-white text-black mx-4 border bg-slate-100 bg-black-500  py-1 px-6 focus:outline-none hover:bg-green-600 rounded text-lg mb-6 float-right">Logout</button>
-            </form>
+            
+            <div class="dropdown relative text-3xl float-right rounded-lg bg-zinc-800 p-2 border border-green-600">
+            <a class="flex mr-2 hover:text-gray-400 text-white" href="php/exit.php" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <button ><?= isset($_SESSION["user_name"])? explode('/',$_SESSION["user_name"])[0]:"go.fvja.ch"?></button>
+              <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="caret-down" class="w-2 ml-2" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                <path fill="currentColor" d="M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z"></path>
+              </svg>
+            </a>
+          <ul class="dropdown-menu min-w-max absolute bg-white text-base z-50 float-left py-2 list-none text-left rounded-lg shadow-lg mt-1 hidden m-0 bg-clip-padding border-none"aria-labelledby="dropdownMenuButton9">
+            <li> 
+              <form action="<?= $_SERVER["PHP_SELF"];?>" method="post" class="p-3 inline">
+                <button type="submit" name="logout" class="dropdown-item py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100">Logout</button>
+              </form>
+            </li>
+            <li>
+            <button type="button" class="dropdown-item py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100 transition duration-150 ease-in-out" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            change Password</button>
+
+            </li>
+          </ul>
           </h1>
           
           <?php foreach(get_information()["Information"] as $key => $value):?>
