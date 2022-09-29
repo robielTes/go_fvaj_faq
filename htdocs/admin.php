@@ -43,8 +43,7 @@ function get_user_data($user_name){
 
 //check if user authentication is valid
 if(isset($_POST["submit"])){
-    if(get_user_data($_POST["login"]) !== null && 
-    password_verify($_POST["password"],get_user_data($_POST["login"])["password"])){
+    if(get_user_data($_POST["login"]) !== null && verify_password($_POST["login"], $_POST["password"])){
         $_SESSION["user_name"] = $_POST["login"].'/'.$_SESSION["type"];
         
     }else{
@@ -128,9 +127,6 @@ function add_information($title, $question, $answer){
 
 //update information in json file
 if(isset($_POST["update"])){
-  echo "<pre>";
-  print_r($_POST);
-  echo "</pre>";
   update_information($_POST["title"], $_POST["question"], $_POST["answer"], --$_POST["update"]);
   generate_html_page();
   unset($_POST["update"],$_POST["title"],$_POST["question"],$_POST["answer"]);
@@ -163,6 +159,64 @@ function delete_information($id){
   file_put_contents($filename, $data);
 }
 
+//change Password
+if(isset($_POST["changePassword"])){
+  
+  if(verify_password("admin", $_POST["AdminPassword"])){
+    if(validate_password($_POST["newPassword"]) == null){
+      if($_POST["newPassword"] == $_POST["newPasswordConfirmation"]){
+        change_password(explode('-',$_POST["username"])[0], $_POST["newPassword"]);
+        unset($_POST["changePassword"],$_POST["username"],$_POST["AdminPassword"],$_POST["newPassword"],$_POST["newPasswordConfirmation"]);
+      }
+      else{
+        echo "Passwords do not match";
+      }
+    }else{
+      echo validate_password($_POST["newPassword"]);
+    }
+  }
+  else{
+    echo "Wrong Password";
+  }
+  
+}
+
+//function to verify password
+function verify_password($username, $password){
+  return password_verify($password,get_user_data($username)["password"]);
+}
+
+function change_password($username, $newPassword){
+  $filename = "private/$_SESSION[type]/information.json";
+  $data = file_get_contents($filename);
+  $info = json_decode($data, true);
+  $info["users"][$username]['password'] = password_hash($newPassword, PASSWORD_DEFAULT);
+  $data = json_encode($info, JSON_PRETTY_PRINT);
+  file_put_contents($filename, $data);
+}
+
+//validate password
+function validate_password($password){
+  if(strlen($password) < 8){
+    return "Password must be at least 8 characters";
+  }
+  else if(!preg_match("#[0-9]+#", $password)){
+    return "Password must include at least one number";
+  }
+  else if(!preg_match("#[a-z]+#", $password)){
+    return "Password must include at least one letter";
+  }
+  else if(!preg_match("#[A-Z]+#", $password)){
+    return "Password must include at least one CAPS";
+  }
+  else if(!preg_match("#\W+#", $password)){
+    return "Password must include at least one symbol";
+  }else{
+    return null;
+  }
+}
+
+
 ?>
 <!-- Modal -->
 <div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
@@ -179,15 +233,15 @@ function delete_information($id){
                   type="password"
                   class="w-full p-4 bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
                   placeholder="Password Admin"
-                  name="password"
+                  name="AdminPassword"
                 />
               </div>
               <!-- username input -->
               <div class="mb-6">
                 <select class="w-full p-4 block px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name="username" id="username">
-                <option value="admin" selected>Admin</option>
-                <option value="webmaster">Webmaster</option>
-                <option value="guest">Guest</option>
+                <option value="0-admin" selected>Admin</option>
+                <option value="1-webmaster">Webmaster</option>
+                <option value="2-guest">Guest</option>
                 </select>
               </div>
 
@@ -197,7 +251,7 @@ function delete_information($id){
                   type="password"
                   class="w-full p-4 bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
                   placeholder="Password"
-                  name="password"
+                  name="newPassword"
                 />
               </div>
               <!-- Password conformation input -->
@@ -206,7 +260,7 @@ function delete_information($id){
                   type="password"
                   class="w-full p-4 bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
                   placeholder="Password Confirmation"
-                  name="password"
+                  name="newPasswordConfirmation"
                 />
               </div>
               <!-- Submit button -->
