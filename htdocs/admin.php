@@ -299,11 +299,13 @@ if(isset($_SESSION["user_name"]) && explode('/',$_SESSION["user_name"])[1] == $_
                 <button type="submit" name="logout" class="dropdown-item py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100">Logout</button>
               </form>
             </li>
-            <li>
-            <button type="button" class="dropdown-item py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100 transition duration-150 ease-in-out" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            change Password</button>
 
-            </li>
+            <?php if(explode('/',$_SESSION["user_name"])[0] == "admin"):?>
+              <li>
+                <button type="button" class="dropdown-item py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100 transition duration-150 ease-in-out" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                change Password</button>
+              </li>
+            <?php endif;?>
           </ul>
           </h1>
           
