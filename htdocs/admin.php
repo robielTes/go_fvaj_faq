@@ -185,7 +185,7 @@ if(isset($_POST["changePassword"])){
 function verify_password($username, $password){
   return password_verify($password,get_user_data($username)["password"]);
 }
-
+//function to change password
 function change_password($username, $newPassword){
   $filename = "private/$_SESSION[type]/information.json";
   $data = file_get_contents($filename);
@@ -328,7 +328,7 @@ if(isset($_SESSION["user_name"]) && explode('/',$_SESSION["user_name"])[1] == $_
 
 
                   <?php if(explode('/',$_SESSION["user_name"])[0] == "admin"):?>
-                    <form method="POST" action="<?= $_SERVER["PHP_SELF"];?>">
+                    <form method="POST" action="<?= $_SERVER["PHP_SELF"];?>" onsubmit="return confirm('Are you sure?');">
                       <button type="submit" name="delete" value="<?=$key?>">
                       <i class="fa-solid fa-trash"></i>
                       </button>
