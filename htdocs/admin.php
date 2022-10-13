@@ -1,13 +1,15 @@
 <?php
 session_start();
 
+require 'vendor/autoload.php';
+use Michelf\Markdown;
+
 // unset and destroy session if logout is clicked
 if(isset($_POST["logout"])){
   unset($_SESSION["user_name"]);
   session_destroy();  
   header("Location: ./index.html");
 }
-
 
 include_once("./templates/header.html");
 
@@ -109,10 +111,13 @@ function display_main(){
   return $main_data;
 }
 
-//add information to json file
+//Parseing the information as add information to json file
 
 if(isset($_POST["add"])){
-  add_information($_POST["title"], $_POST["question"], $_POST["answer"]);
+  $title = Markdown::defaultTransform($_POST["title"]);
+  $question =  Markdown::defaultTransform($_POST["question"]);
+  $answer =  Markdown::defaultTransform($_POST["answer"]);
+  add_information($title, $question, $answer);
   generate_html_page();
   unset($_POST["add"],$_POST["title"],$_POST["question"],$_POST["answer"]);
 }
@@ -125,9 +130,12 @@ function add_information($title, $question, $answer){
   file_put_contents($filename, $data);
 }
 
-//update information in json file
+//Parseing the information as update information in json file
 if(isset($_POST["update"])){
-  update_information($_POST["title"], $_POST["question"], $_POST["answer"], --$_POST["update"]);
+  $title = Markdown::defaultTransform($_POST["title"]);
+  $question =  Markdown::defaultTransform($_POST["question"]);
+  $answer =  Markdown::defaultTransform($_POST["answer"]);
+  update_information($title, $question, $answer, --$_POST["update"]);
   generate_html_page();
   unset($_POST["update"],$_POST["title"],$_POST["question"],$_POST["answer"]);
 }
@@ -349,6 +357,7 @@ if(isset($_SESSION["user_name"]) && explode('/',$_SESSION["user_name"])[1] == $_
               </div>
             </div>
             <?php else:?>
+              <!-- update information -->
               <form action="<?=$_SERVER["PHP_SELF"]?>" id="collapseNew" method="post">
                 <div class="w-full bg-white text-gray-800 rounded-lg flex justify-between hover:bg-slate-100 hover:text-gray-600 active:hover:text-gray-400 pb-3 pt-4 px-5 title-font font-medium border border-black-100" 
                   type="button" data-bs-toggle="collapse" data-bs-target="<?="#collapse{$key}"?>" aria-expanded="false" aria-controls="collapseExample">
@@ -378,7 +387,7 @@ if(isset($_SESSION["user_name"]) && explode('/',$_SESSION["user_name"])[1] == $_
             <?php endif;?>
               
           <?php endforeach ?>
-
+            <!-- Add information -->
           <?php if(explode('/',$_SESSION["user_name"])[0] != "guest"):?>
             <button class="w-full justify-center bg-white text-gray-800 rounded-t-md hover:bg-slate-100 hover:text-gray-600 active:hover:text-gray-400 flex pb-3 pt-4 px-5 title-font font-medium border border-black-100" data-bs-toggle="collapse" data-bs-target="#collapseNew" aria-expanded="false" aria-controls="collapseExample">
               <i class="fa-sharp fa-solid fa-plus"></i>
