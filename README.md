@@ -3,7 +3,7 @@
 
 <br />
 <p align="center">
-  <a href="https://static.wixstatic.com/media/feab6e_31cd49ccb0b24d5991ea51fcfa042123~mv2.png/v1/fill/w_130,h_44,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/logo_fvaj.png">
+  <a href="https://github.com/robielcpnv/go_fvaj_faq/blob/main/htdocs/img/favicon-228x228.png">
     <img src="public/assets/logo.png" alt="Logo" width="80" height="80">
   </a>
 <h3 align="center">Projet FAQ</h3>
