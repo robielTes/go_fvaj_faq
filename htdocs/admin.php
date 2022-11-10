@@ -75,17 +75,20 @@ function display_faq(){
   $faq_data ="";
   
   foreach(get_information()["Information"] as $key => $value){
+    $title = Markdown::defaultTransform($value["title"]);
     $key++;
     $faq_data.= '<button class="w-full bg-white text-gray-800 rounded-lg hover:bg-slate-100 hover:text-gray-600 active:hover:text-gray-400 flex pb-3 pt-4 px-5 title-font font-medium border border-black-100" type="button" data-bs-toggle="collapse" data-bs-target="#collapse'.$key.' "aria-expanded="false" aria-controls="collapseExample">';
-    $faq_data.=    "#{$key} {$value["title"]}";      
+    $faq_data.=    "#{$key}. {$title}";      
     $faq_data.= '</button>';
     $faq_data.=  '<div class="collapse" id="collapse'.$key.'">';
     $faq_data.=    '<div class="block p-5 shadow-lg bg-white rounded-lg">';
-    $faq_data.=       "<strong>{$value["question"]}</strong>{$value["answer"]}";
+    $faq_data.=       Markdown::defaultTransform($value["question"]);
+    $faq_data.=       Markdown::defaultTransform($value["answer"]);
     $faq_data.=    '</div>';
     $faq_data.=  '</div>';
   }
   return $faq_data;
+  
 }
 
 function display_main(){
@@ -114,10 +117,11 @@ function display_main(){
 //Parseing the information as add information to json file
 
 if(isset($_POST["add"])){
-  $title = Markdown::defaultTransform($_POST["title"]);
+  /* $title = Markdown::defaultTransform($_POST["title"]);
   $question =  Markdown::defaultTransform($_POST["question"]);
   $answer =  Markdown::defaultTransform($_POST["answer"]);
-  add_information($title, $question, $answer);
+  add_information($title, $question, $answer); */
+  add_information($_POST["title"], $_POST["question"], $_POST["answer"]);
   generate_html_page();
   unset($_POST["add"],$_POST["title"],$_POST["question"],$_POST["answer"]);
 }
@@ -132,10 +136,11 @@ function add_information($title, $question, $answer){
 
 //Parseing the information as update information in json file
 if(isset($_POST["update"])){
-  $title = Markdown::defaultTransform($_POST["title"]);
+ /*  $title = Markdown::defaultTransform($_POST["title"]);
   $question =  Markdown::defaultTransform($_POST["question"]);
   $answer =  Markdown::defaultTransform($_POST["answer"]);
-  update_information($title, $question, $answer, --$_POST["update"]);
+  update_information($title, $question, $answer, --$_POST["update"]); */
+  update_information($_POST["title"], $_POST["question"], $_POST["answer"], --$_POST["update"]);
   generate_html_page();
   unset($_POST["update"],$_POST["title"],$_POST["question"],$_POST["answer"]);
 }
@@ -322,7 +327,7 @@ if(isset($_SESSION["user_name"]) && explode('/',$_SESSION["user_name"])[1] == $_
             <?php if($_POST["edit"] != $key):?>
               <div class="w-full bg-white text-gray-800 rounded-lg flex justify-between hover:bg-slate-100 hover:text-gray-600 active:hover:text-gray-400 pb-3 pt-4 px-5 title-font font-medium border border-black-100" 
                 type="button" data-bs-toggle="collapse" data-bs-target="<?="#collapse{$key}"?>" aria-expanded="false" aria-controls="collapseExample">
-                <div><?="#{$key} {$value["title"]}"?></div>
+                <div><?="#{$key}"?> <?=Markdown::defaultTransform($value["title"])?></div>
                 <div class="flex">
                 
                   
@@ -347,13 +352,13 @@ if(isset($_SESSION["user_name"]) && explode('/',$_SESSION["user_name"])[1] == $_
               </div>
               <div class="collapse" id="<?="collapseEdit{$key}"?>">
               <div class="block p-5 shadow-lg bg-white rounded-lg">
-                <strong><?=$value["question"]?></strong><?=$value["answer"]?>
+                <?=Markdown::defaultTransform($value["question"])?><?=Markdown::defaultTransform($value["answer"])?>
               </div>
             </div>
 
             <div class="collapse" id="<?="collapse{$key}"?>">
               <div class="block p-5 shadow-lg bg-white rounded-lg">
-                <strong><?=$value["question"]?></strong><?=$value["answer"]?>
+                <?=Markdown::defaultTransform($value["question"])?><?=Markdown::defaultTransform($value["answer"])?>
               </div>
             </div>
             <?php else:?>
