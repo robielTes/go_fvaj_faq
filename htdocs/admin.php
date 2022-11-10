@@ -368,17 +368,17 @@ if(isset($_SESSION["user_name"]) && explode('/',$_SESSION["user_name"])[1] == $_
                     <div class="relative mb-4">
                       <label for="title" class="leading-7 text-sm text-gray-600">Title</label>
                       <textarea id="title" name="title" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 transition-colors duration-200 ease-in-out"
-                      ><?=$value["title"]?></textarea>
+                      ><?=strip_tags($value["title"])?></textarea>
                     </div>
                     <div class="relative mb-4">
                       <label for="question" class="leading-7 text-sm text-gray-600">Question</label>
                       <textarea id="question" name="question" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 transition-colors duration-200 ease-in-out"
-                      ><?=$value["question"]?></textarea>
+                      ><?=strip_tags($value["question"])?></textarea>
                     </div>
                     <div class="relative">
                       <label for="answer" class="leading-7 text-sm text-gray-600">Answer</label>
                       <textarea id="answer" name="answer"  class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 resize-none transition-colors duration-200 ease-in-out"
-                      ><?=$value["answer"]?></textarea>
+                      ><?=strip_tags($value["answer"])?></textarea>
                     </div>
                   </div>
                   <button type="submit" name="update" value="<?=$key?>" class="m-4 px-6 inline-block py-2.5 bg-blue-500 text-white leading-tight uppercase rounded-lg shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Update</button>
